@@ -27,7 +27,7 @@ public abstract class Activity extends AppCompatActivity {
         initWidows();
 
         if (initArgs(getIntent().getExtras())) {
-            getContentLayoutId();
+            setContentView(getContentLayoutId());
             initWidget();
             initData();
         }else {
