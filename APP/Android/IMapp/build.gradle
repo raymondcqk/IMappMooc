@@ -28,7 +28,7 @@ task clean(type: Delete) {
 }
 
 //公共版本号
-ext{
+ext {
     // 版本号相关
     versionCode = 1;
     versionName = '1.0.0'
@@ -49,5 +49,10 @@ ext{
     dbflowVersion = "4.0.0-beta7"
     airpanelVersion = "1.1.0"
     lameVersion = "1.0.0"
+
+    geniusVersion = '2.0.0'
+    glideVersion = '3.7.0'
+    circleimageviewVersion = '2.1.0'
+
 
 }
