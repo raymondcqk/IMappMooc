@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.keihong.imapp.MainActivity">
+    tools:context=".module.login.mvp.view.LoginBaseActivity">
 
     <EditText
         android:id="@+id/edt_search"

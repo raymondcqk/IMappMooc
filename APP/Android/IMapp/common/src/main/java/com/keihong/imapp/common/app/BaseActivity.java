@@ -1,10 +1,15 @@
 package com.keihong.imapp.common.app;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+
+import com.keihong.imapp.common.mvp.BaseModel;
+import com.keihong.imapp.common.mvp.BasePresenter;
+import com.keihong.imapp.common.mvp.MVPUtil;
 
 import java.util.List;
 
@@ -17,7 +22,11 @@ import butterknife.ButterKnife;
  * abstract: 子类必须复写
  */
 
-public abstract class Activity extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel> extends AppCompatActivity {
+
+    public Context activity;
+    public T mPresenter;
+    public E mModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,14 +35,35 @@ public abstract class Activity extends AppCompatActivity {
         // 在界面未初始化之前调用的初始化窗口
         initWidows();
 
+
         if (initArgs(getIntent().getExtras())) {
             setContentView(getContentLayoutId());
             initWidget();
+            initLinstener();
             initData();
-        }else {
+            //初试化MVP
+            initMVP();
+        } else {
             finish();
         }
 
+    }
+
+    private void initMVP() {
+        //初始化mvp
+        activity = this;
+        mPresenter = MVPUtil.getT(this, 0);
+        mModel = MVPUtil.getT(this, 1);
+
+        if (null != mPresenter) {
+            mPresenter.mContext = this;
+        }
+
+        initPresenter();
+    }
+
+    protected void initPresenter() {
+        mPresenter.setViewAndModel(this, mModel);
     }
 
     /**
@@ -66,7 +96,10 @@ public abstract class Activity extends AppCompatActivity {
      */
     protected void initWidget() {
         ButterKnife.bind(this);
+        initLinstener();
     }
+
+    protected abstract void initLinstener();
 
     /**
      * 初始化数据
@@ -77,6 +110,7 @@ public abstract class Activity extends AppCompatActivity {
 
     /**
      * 当点击界面导航返回时，Finish当前界面
+     *
      * @return
      */
     @Override
@@ -88,7 +122,7 @@ public abstract class Activity extends AppCompatActivity {
 
     /**
      * 当按下物理返回键，finish
-     *
+     * <p>
      * 情况：一个Activity有多个Fragment，Fragment有层次，点返回键是返回上一个Fragment
      * 解决： Activity和Fragment之间要通信
      */
@@ -101,9 +135,9 @@ public abstract class Activity extends AppCompatActivity {
         if (fragments != null && fragments.size() > 0) {
             for (Fragment fragment : fragments) {
                 // 判断是否为我们能够处理的Fragment类型
-                if (fragment instanceof com.keihong.imapp.common.app.Fragment) {
+                if (fragment instanceof BaseFragment) {
                     // 判断是否拦截了返回按钮
-                    if (((com.keihong.imapp.common.app.Fragment) fragment).onBackPressed()) {
+                    if (((BaseFragment) fragment).onBackPressed()) {
                         // 如果有直接Return,无则进行最后面的Activity的Finish
                         return;
                     }

@@ -17,7 +17,7 @@ import butterknife.Unbinder;
  * @description
  */
 
-public abstract class Fragment extends android.support.v4.app.Fragment {
+public abstract class BaseFragment extends android.support.v4.app.Fragment {
 
     //复用根布局view
     protected View mRoot;
@@ -30,7 +30,7 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
      * 当Fragment被添加到Activity的时候执行
      * 比onCreateView更优先
      *
-     * Context == Activity
+     * Context == BaseActivity
      * @param context
      */
     @Override
