@@ -1,6 +1,7 @@
 package net.keihong.web.imapp.push.service;
 
-import net.keihong.web.imapp.push.bean.User;
+import net.keihong.web.imapp.push.bean.api.account.RegisterModel;
+import net.keihong.web.imapp.push.bean.db.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -17,27 +18,14 @@ import javax.ws.rs.core.MediaType;
 @Path("/account")
 public class AccountService {
 
-    /**
-     * get请求 响应地址：localhost/api/account/login
-     * @return
-     */
-    @GET
-    @Path("/login")
-    //指定请求与返回的响应体body为JSON
-    @Consumes(MediaType.APPLICATION_JSON)   //请求内容格式：json
-    @Produces(MediaType.APPLICATION_JSON)   //返回格式：json
-    public User loginPost(){
-        return new User("陈其康",0);
-        //通过反射获得方法名：AccountService.class.getDeclaredMethods()[0].getName();
-    }
-
+    // 注册
     @POST
-    @Path("/login")
-    @Produces("text/plain;charset=utf-8")
-    public String loginGet(){
-        return "你申请了登陆 You are logining.";
-        //通过反射获得方法名：AccountService.class.getDeclaredMethods()[0].getName();
+    @Path("/register")
+    // 指定请求与返回的相应体为JSON
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public RegisterModel register(RegisterModel model) {
+        model.setName("注册成功");
+        return model;
     }
-
-
 }

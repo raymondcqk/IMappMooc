@@ -1,6 +1,7 @@
 package net.keihong.web.imapp.push;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
+import net.keihong.web.imapp.push.provider.GsonProvider;
 import net.keihong.web.imapp.push.service.AccountService;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -18,8 +19,11 @@ public class Application extends ResourceConfig{
         packages(AccountService.class.getPackage().getName());
         //等同于"net.keihong.web.imapp.push.service",上诉使用反射机制，更安全
 
-        //注册Json解析器(转换器)Converter
-        register(JacksonJsonProvider.class);
+        // 注册Json解析器
+        // register(JacksonJsonProvider.class);
+        // 替换解析器为Gson
+        register(GsonProvider.class);
+
         //注册 日志打印输出
         register(Logger.class);
     }
