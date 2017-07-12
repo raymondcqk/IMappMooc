@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.keihong.imapp.common.mvp.BaseModel;
 import com.keihong.imapp.common.mvp.BasePresenter;
@@ -52,6 +53,12 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
     private void initMVP() {
         //初始化mvp
         activity = this;
+
+        if (MVPUtil.getT(this, 0) == null){
+            Log.e("mvp_init","参数为空");
+            return;
+        }
+
         mPresenter = MVPUtil.getT(this, 0);
         mModel = MVPUtil.getT(this, 1);
 
@@ -99,7 +106,9 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
         initLinstener();
     }
 
-    protected abstract void initLinstener();
+    protected void initLinstener() {
+
+    }
 
     /**
      * 初始化数据

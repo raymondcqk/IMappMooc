@@ -1,4 +1,4 @@
-package com.keihong.imapp.module.login.mvp.view;
+package com.keihong.imapp.module.demo.mvp.view;
 
 import android.app.ProgressDialog;
 import android.widget.Button;
@@ -7,21 +7,27 @@ import android.widget.TextView;
 
 import com.keihong.imapp.R;
 import com.keihong.imapp.common.app.BaseActivity;
-import com.keihong.imapp.module.login.mvp.LoginContract;
+import com.keihong.imapp.module.demo.mvp.DemoMVPContract;
+import com.keihong.imapp.module.demo.mvp.model.MvpDemoModel;
+import com.keihong.imapp.module.demo.mvp.presenter.MvpDemoPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class LoginBaseActivity<LoginPresenter, LoginModel> extends BaseActivity implements LoginContract.View {
+public class MVPDemoActivity extends BaseActivity<MvpDemoPresenter, MvpDemoModel>
+        implements DemoMVPContract.View {
 
 
     @BindView(R.id.txt_test)
     TextView mTestText;
     @BindView(R.id.btn_submit)
     Button mBtnSubmit;
-    @BindView(R.id.edt_search)
-    EditText mEdtSearch;
-
+    @BindView(R.id.btn_clear)
+    Button mBtnClear;
+    @BindView(R.id.edt_account)
+    EditText mEdtAccount;
+    @BindView(R.id.edt_passwd)
+    EditText mEdtPasswd;
     private ProgressDialog progressDialog;
 
 
@@ -32,7 +38,7 @@ public class LoginBaseActivity<LoginPresenter, LoginModel> extends BaseActivity 
 
     @Override
     protected int getContentLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_mvp_demo;
     }
 
     @Override
@@ -46,18 +52,12 @@ public class LoginBaseActivity<LoginPresenter, LoginModel> extends BaseActivity 
 
     @Override
     protected void initLinstener() {
-
     }
 
     @Override
     protected void initData() {
         super.initData();
 
-
-    }
-
-    @OnClick(R.id.btn_submit)
-    void onSubmit() {
 
     }
 
@@ -73,17 +73,28 @@ public class LoginBaseActivity<LoginPresenter, LoginModel> extends BaseActivity 
     }
 
     @Override
-    public void success() {
-
+    public void success(String next) {
+        mTestText.setText(next);
     }
 
     @Override
-    public void failed() {
-
+    public void failed(String error) {
+        mTestText.setText(error);
     }
 
     @Override
     public void clear() {
+        mEdtAccount.setText("");
+        mEdtPasswd.setText("");
+    }
 
+    @OnClick(R.id.btn_submit)
+    void onSubmit() {
+        mPresenter.rxLogin(mEdtAccount.getText().toString(), mEdtPasswd.getText().toString());
+    }
+
+    @OnClick(R.id.btn_clear)
+    void onClear() {
+        mPresenter.clear();
     }
 }
