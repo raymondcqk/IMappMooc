@@ -49,12 +49,12 @@
                 android:id="@+id/im_search"
                 android:layout_width="@dimen/len_40"
                 android:layout_height="@dimen/len_40"
-                android:scaleType="centerInside"
                 android:layout_gravity="end|center_vertical"
                 android:layout_margin="@dimen/len_4"
                 android:contentDescription="@string/app_name"
                 android:foreground="@drawable/ic_touch_menu"
                 android:padding="@dimen/len_10"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_search"
                 android:tint="?attr/toolbarMenuIconColor"/>
         </FrameLayout>
@@ -69,8 +69,8 @@
     </FrameLayout>
 
     <net.qiujuer.genius.ui.widget.FloatActionButton
-        android:layout_width="@dimen/len_52"
         android:id="@+id/btn_action"
+        android:layout_width="@dimen/len_52"
         android:layout_height="@dimen/len_52"
         android:layout_marginBottom="@dimen/len_68"
         android:layout_marginEnd="@dimen/len_16"
@@ -86,5 +86,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/len_52"
         android:layout_gravity="bottom"
-        android:background="@color/amber_300"/>
+        android:background="@color/white"
+        android:outlineProvider="bounds"
+        app:elevation="@dimen/len_2"
+        app:itemIconTint="@color/text_nav"
+        app:itemTextColor="@color/text_nav"
+        app:menu="@menu/navigation_items"
+        tools:targetApi="lollipop"/>
 </android.support.design.widget.CoordinatorLayout>
