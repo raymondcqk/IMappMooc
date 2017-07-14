@@ -4,12 +4,10 @@
              android:layout_height="match_parent"
              tools:context="com.keihong.imapp.module.main.fragments.main.ActiveFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.keihong.imapp.common.widget.GalleyView
+        android:id="@+id/galleyView"
+        android:padding="1dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Active"
-        android:textColor="@color/black"/>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

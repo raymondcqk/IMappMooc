@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -161,8 +162,9 @@ public class GalleyView extends RecyclerView {
                     }
 
                 } while (data.moveToNext());
+                mAdapter.replace(images);
             }
-            mAdapter.replace(images);
+
         }
 
         @Override
@@ -190,6 +192,9 @@ public class GalleyView extends RecyclerView {
             //若为未选中，先查看是否满
             if (mSelectedImages.size() >= MAX_IMAGE_SIZE) {
                 // TODO: 2017/7/14 弹出吐司告诉用户数量已满
+                String str = getResources().getString(R.string.label_galley_select_max_size);
+                str = String.format(str,MAX_IMAGE_SIZE);
+                Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
                 notifyRefresh = false;
             } else {
                 //若未满，则添加
@@ -202,10 +207,11 @@ public class GalleyView extends RecyclerView {
         if (notifyRefresh) {
             notifySelectChanged();
         }
-        return notifyRefresh;
+        return true;
     }
 
     private void notifySelectChanged() {
+        mAdapter.notifyDataSetChanged();
         //得到监听者，并判断是否为空，然后进行选中图片的数量回调
         SelectChangedListener listener = mSelectChangedListener;
         if (listener != null) {
@@ -275,7 +281,15 @@ public class GalleyView extends RecyclerView {
 
         @Override
         protected void onBind(Image image) {
-            Glide.with(getContext()).load(image.path).diskCacheStrategy(DiskCacheStrategy.NONE).centerCrop().placeholder(R.color.grey_100).into(mPic);
+            Glide.with(getContext())
+                    .load(image.path)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .centerCrop()
+                    .placeholder(R.color.grey_100)
+                    .into(mPic);
+            mShade.setVisibility(image.isSelect?VISIBLE:INVISIBLE);
+            mSelected.setChecked(image.isSelect);
+            mSelected.setVisibility(VISIBLE);
 
         }
     }
