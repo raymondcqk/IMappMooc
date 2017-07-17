@@ -162,15 +162,24 @@ public class GalleyView extends RecyclerView {
                     }
 
                 } while (data.moveToNext());
-                mAdapter.replace(images);
+                updateDataSource(images);
             }
 
         }
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
-            mAdapter.replace(null);
+            updateDataSource(null);
         }
+    }
+
+    /**
+     * 当Loader完成图片加载，通知Adapter刷新界面（第一次加载所有列表）
+     *
+     * @param images
+     */
+    private void updateDataSource(List<Image> images) {
+        mAdapter.replace(images);
     }
 
     /**
@@ -193,7 +202,7 @@ public class GalleyView extends RecyclerView {
             if (mSelectedImages.size() >= MAX_IMAGE_SIZE) {
                 // TODO: 2017/7/14 弹出吐司告诉用户数量已满
                 String str = getResources().getString(R.string.label_galley_select_max_size);
-                str = String.format(str,MAX_IMAGE_SIZE);
+                str = String.format(str, MAX_IMAGE_SIZE);
                 Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
                 notifyRefresh = false;
             } else {
@@ -207,11 +216,11 @@ public class GalleyView extends RecyclerView {
         if (notifyRefresh) {
             notifySelectChanged();
         }
-        return true;
+        return notifyRefresh;
     }
 
     private void notifySelectChanged() {
-        mAdapter.notifyDataSetChanged();
+
         //得到监听者，并判断是否为空，然后进行选中图片的数量回调
         SelectChangedListener listener = mSelectChangedListener;
         if (listener != null) {
@@ -249,11 +258,6 @@ public class GalleyView extends RecyclerView {
     private class Adapter extends RecyclerAdapter<Image> {
 
         @Override
-        public void update(Image image, ViewHolder<Image> holder) {
-
-        }
-
-        @Override
         protected int getItemViewType(int position, Image image) {
             return R.layout.cell_galley;
         }
@@ -287,7 +291,7 @@ public class GalleyView extends RecyclerView {
                     .centerCrop()
                     .placeholder(R.color.grey_100)
                     .into(mPic);
-            mShade.setVisibility(image.isSelect?VISIBLE:INVISIBLE);
+            mShade.setVisibility(image.isSelect ? VISIBLE : INVISIBLE);
             mSelected.setChecked(image.isSelect);
             mSelected.setVisibility(VISIBLE);
 

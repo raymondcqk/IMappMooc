@@ -2,6 +2,7 @@ package com.keihong.imapp.common.widget.recycler;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,8 @@ import butterknife.Unbinder;
  * @description
  */
 
-@SuppressWarnings("ALL")
+
+@SuppressWarnings("JavaDoc")
 public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder<Data>>
         implements View.OnLongClickListener, View.OnClickListener, AdapterCallback<Data> {
 
@@ -35,7 +37,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<Recycle
      * @param dataList
      * @param listener
      */
-    public RecyclerAdapter(List<Data> dataList, AdapterListener<Data> listener) {
+    private RecyclerAdapter(List<Data> dataList, AdapterListener<Data> listener) {
         this.mDataList = dataList;
         this.mListener = listener;
     }
@@ -45,7 +47,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<Recycle
      *
      * @param listener
      */
-    public RecyclerAdapter(AdapterListener<Data> listener) {
+    private RecyclerAdapter(AdapterListener<Data> listener) {
         this(new ArrayList<Data>(), listener);
     }
 
@@ -163,6 +165,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<Recycle
      *
      * @param datas Data
      */
+    @SafeVarargs
     public final void add(Data... datas) {
         if (datas != null && datas.length > 0) {
             int startPos = mDataList.size();
@@ -261,7 +264,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<Recycle
      *
      * @param <Data>
      */
-    public interface AdapterListener<Data> {
+    interface AdapterListener<Data> {
         //当Cell点击时触发
         void onItemClick(RecyclerAdapter.ViewHolder holder, Data data);
 
@@ -277,7 +280,7 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<Recycle
     public static abstract class ViewHolder<Data> extends RecyclerView.ViewHolder {
         private Unbinder mUnbinder;
         private AdapterCallback<Data> mDataAdapterCallback;
-        protected Data mData;
+        Data mData;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -308,9 +311,18 @@ public abstract class RecyclerAdapter<Data> extends RecyclerView.Adapter<Recycle
          */
         public void updateData(Data data) {
             if (this.mDataAdapterCallback != null) {
+                Log.d("ViewHolder.updateData()", "ViewHolder.updateData()");
                 this.mDataAdapterCallback.update(data, this);
             }
 
+        }
+
+        public Unbinder getUnbinder() {
+            return mUnbinder;
+        }
+
+        public void setUnbinder(Unbinder unbinder) {
+            mUnbinder = unbinder;
         }
     }
 
