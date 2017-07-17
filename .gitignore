@@ -1,3 +1,13 @@
 
 WEB/IMapp/.idea/
+
 WEB/IMapp/build/
+APP/Android/IMapp/*.iml
+APP/Android/IMapp/.gradle
+APP/Android/IMapp/local.properties
+APP/Android/IMapp/.idea/workspace.xml
+APP/Android/IMapp/.idea/libraries
+APP/Android/IMapp/.DS_Store
+APP/Android/IMapp/build
+APP/Android/IMapp/captures
+APP/Android/IMapp/.externalNativeBuild
